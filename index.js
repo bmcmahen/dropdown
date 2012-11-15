@@ -95,7 +95,6 @@ Dropdown.prototype = {
 	// Remove the window event handler, so it doesnt keep firing
 	// when the dropdown isnt shown. XXX potential conflict here?
 	_removeEvents: function(){
-		var self = this;
-		self.htmlEvent.onclick = null; 
+		this.htmlEvent.onclick = null; 
 	}
 }
