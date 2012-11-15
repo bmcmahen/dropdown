@@ -22,29 +22,25 @@ The beauty of Component is that you can install multiple modules and easily buil
 
 ## Use
 	
-Use HTML like you would use for the Bootstrap dropdown menu.
+Your HTML should be very similar (okay, basically identical) to the Bootstrap dropdown menu. 
 
 ```javascript
-
-	<div class='dropdown'>
-		<a class='dropdown-toggle' href='#' role='button'>dropdown</a>
-		<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-			<li><a tabindex='-1' href='#'>Action</a></li>
-			<li><a tabindex='-1' href='#'>Another action</a></li>
-			<li class='divider'></li>
-			<li><a tabindex='-1' href='#'>Separated link</a></li>
-		</ul>
-	</div>
-
+<div class='dropdown'>
+	<a class='dropdown-toggle' href='#' role='button'>dropdown</a>
+	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+		<li><a tabindex='-1' href='#'>Action</a></li>
+		<li><a tabindex='-1' href='#'>Another action</a></li>
+		<li class='divider'></li>
+		<li><a tabindex='-1' href='#'>Separated link</a></li>
+	</ul>
+</div>
 ```
 
 Import the dropdown class, and pass in the selector string of your trigger element.
 
 ```javascript
-
-	var dropdown = require('dropdown');
-	var myDropdown = dropdown('a.dropdown-toggle');
-
+var dropdown = require('dropdown');
+var myDropdown = dropdown('a.dropdown-toggle');
 ```
 
 Clicking the link should show the dropdown menu. You can also use a few methods:
