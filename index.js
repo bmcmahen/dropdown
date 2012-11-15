@@ -37,7 +37,7 @@ Dropdown.prototype = {
 		if (!this.isShown)
 			return
 
-		self._removeEvent(); 
+		self._removeEvents(); 
 
 		self.isShown = false; 
 		parent.className = parent.className.replace( /(?:^|\s)open(?!\S)/g , '' )
@@ -52,7 +52,7 @@ Dropdown.prototype = {
 			, parent = self.parent
 			, list = self.list; 
 
-		self._closeEvent(); 
+		self._addEvents(); 
 
 		if (self.isShown)
 			return
@@ -76,13 +76,15 @@ Dropdown.prototype = {
 		el.onclick = function(e){
 			self.toggle();
 			e.stopPropagation(); 
+			e.preventDefault(); 
+			return false; 
 		}
 
 		return this; 
 	},
 
 	// Add event handler for clicking on the window, to close dropdown.
-	_closeEvent: function(){
+	_addEvents: function(){
 		var self = this;
 		self.htmlEvent = document.querySelector('html');
 		self.htmlEvent.onclick = function(){
@@ -92,7 +94,7 @@ Dropdown.prototype = {
 
 	// Remove the window event handler, so it doesnt keep firing
 	// when the dropdown isnt shown. XXX potential conflict here?
-	_removeEvent: function(){
+	_removeEvents: function(){
 		var self = this;
 		self.htmlEvent.onclick = null; 
 	}
