@@ -1,0 +1,24 @@
+<html>
+<head>
+	<title></title>
+	<link rel='stylesheet' href='./build/build.css'>
+	<script src='./build/build.js'></script>
+</head>
+<body>
+
+	<div class='dropdown'>
+		<a class='dropdown-toggle' href='#' role='button'>dropdown</a>
+		<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+			<li><a tabindex='-1' href='#'>Action</a></li>
+			<li><a tabindex='-1' href='#'>Another action</a></li>
+			<li class='divider'></li>
+			<li><a tabindex='-1' href='#'>Separated link</a></li>
+		</ul>
+	</div>
+
+<script>
+	var dropdown = require('dropdown');
+	var myDropdown = dropdown('.dropdown-toggle');
+</script>
+</body>
+</html>
