@@ -5,16 +5,16 @@
 
 ## Installation
 
-		Install Component through NPM:
+Install Component through NPM:
 
-		$ npm install component
+		$ npm install -g component
 
-		Go to your directory and install this component:
+Go to your directory and install this component:
 
     $ component install bmcmahen/dropdown
     $ component build
 
-    The beauty of Component is that you can install multiple modules and easily build them into one file. 
+The beauty of Component is that you can install multiple modules and easily build them into one file. 
 
     $ component install bmcmahen/modal
     $ component install bmcmahen/notification
