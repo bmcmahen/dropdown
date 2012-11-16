@@ -5,12 +5,19 @@
  * 
  */
 
+// XXX need way of closing other opened menus when
+// clicking new menu. 
+
 
 // API (not much of one, yet...)
 // return the dropdown menu object, and automatically setup event handler
 module.exports = function(selector){
 	return new Dropdown(document.querySelector(selector))._toggleClick();
 }
+
+// Keep track of opened dropdown so that we can close it
+// if another dropdown trigger is clicked.
+var openDropdown = null;
 
 // Constructor
 var Dropdown = function(element){
@@ -37,6 +44,7 @@ Dropdown.prototype = {
 		if (!this.isShown)
 			return
 
+		openDropdown = null; 
 		self._removeEvents(); 
 
 		self.isShown = false; 
@@ -52,6 +60,10 @@ Dropdown.prototype = {
 			, parent = self.parent
 			, list = self.list; 
 
+		if (openDropdown)
+			openDropdown.hide(); 
+
+		openDropdown = self; 
 		self._addEvents(); 
 
 		if (self.isShown)

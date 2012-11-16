@@ -6,8 +6,19 @@
 </head>
 <body>
 
-	<div class='dropdown'>
-		<a class='dropdown-toggle' href='#' role='button'>dropdown</a>
+	<div class='dropdown' style='display: inline-block;'>
+		<a id='dropdown1' class='dropdown-toggle' href='#' role='button'>dropdown</a>
+		<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
+			<li><a tabindex='-1' href='#'>Action</a></li>
+			<li><a tabindex='-1' href='#'>Another action</a></li>
+			<li class='divider'></li>
+			<li><a tabindex='-1' href='#'>Separated link</a></li>
+		</ul>
+	</div>
+
+
+<div class='dropdown' style='display: inline-block;'>
+		<a id='dropdown2' class='dropdown-toggle' href='#' role='button'>dropdown</a>
 		<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
 			<li><a tabindex='-1' href='#'>Action</a></li>
 			<li><a tabindex='-1' href='#'>Another action</a></li>
@@ -18,7 +29,8 @@
 
 <script>
 	var dropdown = require('dropdown');
-	var myDropdown = dropdown('.dropdown-toggle');
+	dropdown('#dropdown1');
+	dropdown('#dropdown2');
 </script>
 </body>
 </html>
