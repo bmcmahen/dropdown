@@ -49,8 +49,7 @@ Dropdown.prototype = {
 
 		self.isShown = false; 
 		parent.className = parent.className.replace( /(?:^|\s)open(?!\S)/g , '' )
-		list.setAttribute('aria-hidden', true);
-		self.element.focus(); 
+		list.setAttribute('aria-hidden', true);	
 
 		return this; 
 	},
@@ -103,11 +102,20 @@ Dropdown.prototype = {
 		self.htmlEvent.onclick = function(){
 			self.hide(); 
 		};
+
+		window.onkeyup = function(e){
+			if (e.which === 27) { //esc
+				self.hide(); 
+				self.element.focus(); 
+			}
+		};
+
 	},
 
 	// Remove the window event handler, so it doesnt keep firing
 	// when the dropdown isnt shown. XXX potential conflict here?
 	_removeEvents: function(){
 		this.htmlEvent.onclick = null; 
+		window.onkeyup = null;
 	}
 }
