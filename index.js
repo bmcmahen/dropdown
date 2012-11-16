@@ -50,6 +50,7 @@ Dropdown.prototype = {
 		self.isShown = false; 
 		parent.className = parent.className.replace( /(?:^|\s)open(?!\S)/g , '' )
 		list.setAttribute('aria-hidden', true);
+		self.element.focus(); 
 
 		return this; 
 	},
