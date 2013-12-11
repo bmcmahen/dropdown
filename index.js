@@ -7,7 +7,7 @@ var target = require('target');
 var attr = require('attr');
 var stop = require('stop');
 
-var currentDropdown;
+var currentDropdown, isBound;
 
 exports = module.exports = DropDown;
 
@@ -142,6 +142,8 @@ DropDown.prototype.hide = function(){
  */
 
 exports.listen = function(){
+  if (isBound) return;
+  isBound = true;
   return delegate.bind(document, '[data-dropdown-id]', 'click', function(e){
     prevent(e);
     var anchor = target(e);
