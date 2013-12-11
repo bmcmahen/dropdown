@@ -1,10 +1,19 @@
 {
   "name": "dropdown",
   "repo": "bmcmahen/dropdown",
-  "description": "a simple dropdown menu writtein in vanilla javascript",
-  "version": "0.0.1",
+  "description": "a vanilla javascript dropdown menu",
+  "version": "0.1.0",
   "keywords": [],
-  "dependencies": {},
+  "dependencies": {
+    "matthewp/attr": "*",
+    "component/emitter": "*",
+    "component/classes": "*",
+    "component/events": "*",
+    "component/delegate": "*",
+    "bmcmahen/target": "*",
+    "yields/prevent": "*",
+    "yields/stop": "*"
+  },
   "development": {},
   "license": "MIT",
   "scripts": [

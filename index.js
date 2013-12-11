@@ -1,121 +1,154 @@
+var Emitter = require('emitter');
+var classes = require('classes');
+var events = require('events');
+var delegate = require('delegate');
+var prevent = require('prevent');
+var target = require('target');
+var attr = require('attr');
+var stop = require('stop');
+
+var currentDropdown;
+
+// auto trigger any elements with [data-dropdown-id].
+var dropdownTrigger = delegate.bind(document, '[data-dropdown-id]', 'click', function(e){
+  prevent(e);
+  var anchor = target(e);
+  if (classes(anchor).has('showing-dropdown')) return;
+  var _id = attr(anchor).get('data-dropdown-id');
+  var menu = document.getElementById(_id);
+  if (menu) {
+    var dd = new DropDown(anchor, menu);
+    dd.show();
+  }
+});
+
+
+module.exports = DropDown;
+
 /**
- * 
- * Super simple vanilla JS dropdown menu
- * inspired by Bootstrap, uikit.
- * 
+ * Dropdown Constructor
+ * @param {Element} anchor 
+ * @param {Element} el     
  */
 
-// XXX need way of closing other opened menus when
-// clicking new menu. 
-
-
-// API (not much of one, yet...)
-// return the dropdown menu object, and automatically setup event handler
-module.exports = function(selector){
-	return new Dropdown(document.querySelector(selector))._toggleClick();
+function DropDown(anchor, el, stopListening){
+  if (!(this instanceof DropDown)) return new DropDown(anchor, el);
+  if (currentDropdown) currentDropdown.hide();
+  if (stopListening) {
+    delegate.unbind(document, 'click', dropdownTrigger, false);
+  }
+  currentDropdown = this;
+  this.el = el;
+  this.focus = this.el.querySelector('[tabindex = "-1"]');
+  this.anchor = anchor;
+  this.isShown = false;
+  this.autohide = true;
 }
 
-// Keep track of opened dropdown so that we can close it
-// if another dropdown trigger is clicked.
-var openDropdown = null;
+Emitter(DropDown.prototype);
 
-// Constructor
-var Dropdown = function(element){
-	this.element = element; 
-	this.parent = element.parentNode; 
-	this.list = this.parent.querySelector('.dropdown-menu');
-	this.isShown = false; 
+/**
+ * Bind events
+ * @return {DropDown}
+ */
+
+DropDown.prototype.bind = function(){
+  this.windowEvents = events(window, this);
+  this.windowEvents.bind('resize', 'setPosition');
+  this.windowEvents.bind('scroll', 'hide');
+  this.docEvents = events(document, this);
+  this.docEvents.bind('keyup');
+  var self = this;
+  setTimeout(function(){
+    self.bodyEvents = events(document.body, self);
+    self.bodyEvents.bind('click', 'testClose');
+  }, 0);
+  return this;
+};
+
+/**
+ * testClose (is this necessary? or should we auto hide?)
+ * @param {Event} e 
+ * @return {DropDown} 
+ */
+
+DropDown.prototype.testClose = function(e){
+  var t = target(e);
+  if (classes(t).has('showing-dropdown')) stop(e);
+  var self = this;
+  setTimeout(function(){
+    if (self.autohide) self.hide();
+  }, 0);  
+  return this;
+};
+
+/**
+ * Unbind events
+ * @return {Dropdown} 
+ */
+
+DropDown.prototype.unbind = function(){
+  this.windowEvents.unbind();
+  this.docEvents.unbind();
+  this.bodyEvents.unbind();
+  return this;
 }
 
-// Functions
-Dropdown.prototype = {
+/**
+ * onkeyup listen for escape
+ * @param  {Event} e 
+ */
 
-	// Either show or hide, depending on currentState
-	toggle: function(){
-		this.isShown ? this.hide() : this.show(); 
-	},
+DropDown.prototype.onkeyup = function(e){
+  if (e.keyCode == 27) this.hide();
+};
 
-	// Hide the element, and remove window event listener
-	hide: function(){
-		var self = this
-			, parent = self.parent
-			, list = self.list; 
+/**
+ * set position of dropdown
+ * @return {DropDown} 
+ */
 
-		if (!this.isShown)
-			return
+DropDown.prototype.setPosition = function(){
+  var pos = this.anchor.getBoundingClientRect();
+  var style = this.el.style;
+  style.top = pos.bottom + 'px';
+  // eventually check to make sure that it's on the screen?
+  style.left = (pos.left + (pos.right - pos.left) / 2) + 'px';
+  return this;
+};
 
-		openDropdown = null; 
-		self._removeEvents(); 
+/**
+ * show the dropdown
+ * @return {DropDown} 
+ */
 
-		self.isShown = false; 
-		parent.className = parent.className.replace( /(?:^|\s)open(?!\S)/g , '' )
-		list.setAttribute('aria-hidden', true);	
+DropDown.prototype.show = function(){
+  if (this.isShown) return;
+  this.setPosition();
+  attr(this.el).set('aria-hidden', false);
+  classes(this.anchor).add('showing-dropdown');
+  classes(this.el).add('in');
+  this.isShown = true;
+  this.bind();
+  if (this.focus) this.focus.focus(); 
+  this.emit('show');
+  return this;
+};
 
-		return this; 
-	},
+/**
+ * hide the dropdown
+ * @return {DropDown} 
+ */
 
-	// Show element, and add window event listener
-	show: function(){
-		var self = this
-			, parent = self.parent
-			, list = self.list; 
-
-		if (openDropdown)
-			openDropdown.hide(); 
-
-		openDropdown = self; 
-		self._addEvents(); 
-
-		if (self.isShown)
-			return
-
-		self.isShown = true; 
-
-		parent.className += ' open';
-		list.setAttribute('aria-hidden', false);
-		var toFocus = list.querySelector('[tabindex = "-1"]');
-		if (toFocus)
-			toFocus.focus(); 
-
-		return this; 
-	},
-
-	// Primary event handler for clicking trigger element
-	_toggleClick: function(){
-		var self = this
-			, el = self.element; 
-
-		el.onclick = function(e){
-			self.toggle();
-			e.stopPropagation(); 
-			e.preventDefault(); 
-			return false; 
-		}
-
-		return this; 
-	},
-
-	// Add event handler for clicking on the window, to close dropdown.
-	_addEvents: function(){
-		var self = this;
-		self.htmlEvent = document.querySelector('html');
-		self.htmlEvent.onclick = function(){
-			self.hide(); 
-		};
-
-		window.onkeyup = function(e){
-			if (e.which === 27) { //esc
-				self.hide(); 
-				self.element.focus(); 
-			}
-		};
-
-	},
-
-	// Remove the window event handler, so it doesnt keep firing
-	// when the dropdown isnt shown. XXX potential conflict here?
-	_removeEvents: function(){
-		this.htmlEvent.onclick = null; 
-		window.onkeyup = null;
-	}
-}
+DropDown.prototype.hide = function(){
+  if (!this.isShown) return;
+  this.unbind();
+  attr(this.el).set('aria-hidden', true);
+  classes(this.anchor).remove('showing-dropdown');
+  classes(this.el).remove('in');
+  this.isShown = false;
+  this.emit('hide');
+  this.anchor.focus();
+  currentDropdown = null;
+  return this;
+};

@@ -1,55 +1,58 @@
 
 # dropdown
 
-  A simple dropdown menu written in vanilla javascript, with structural styling. Inspired by Bootstrap.
+  A simple dropdown menu built using components. 
+
 
 ## Installation
 
-Install Component through NPM:
-
-		$ npm install -g component
-
-Go to your directory and install this component:
+  Using [Component](https://github.com/component/component):
 
     $ component install bmcmahen/dropdown
-    $ component build
 
-The beauty of Component is that you can install multiple modules and easily build them into one file. 
+  Or use the standalone build located in the `standalone` folder.
 
-    $ component install bmcmahen/modal
-    $ component install bmcmahen/notification
-    $ component build
 
 ## Use
 	
-Your HTML should be very similar (okay, basically identical) to the Bootstrap dropdown menu. 
+  The standard API is similar to Bootstrap and accessed through `data` attributes in your HTML.
 
-```javascript
-<div class='dropdown'>
-	<a class='dropdown-toggle' href='#' role='button'>dropdown</a>
-	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-		<li><a tabindex='-1' href='#'>Action</a></li>
-		<li><a tabindex='-1' href='#'>Another action</a></li>
-		<li class='divider'></li>
-		<li><a tabindex='-1' href='#'>Separated link</a></li>
-	</ul>
+```html
+<a id='dlabel' href='#' data-dropdown-id='mydropdown'>User Menu</a>
+<div id='mydropdown' role='menu' aria-labelledby='dlabel' aria-hidden='true' class='dropdown'>
+  <div class='arrow'></div>
+  <ul>
+    <li><a role='menuitem' tabindex='-1' href='#'> User Settings... </a></li>
+    <li><a role='menuitem' tabindex='-1' href='#'> Logout</a></li>
+  </ul>
 </div>
 ```
 
-Import the dropdown class, and pass in the selector string of your trigger element.
+```javascript
+require('dropdown');
+```
+  
+  You are encouraged to use `role`, `aria-labelledby` and `aria-hidden` attributes to ensure full accessibility. 
+
+  You can also use the javascript API. 
 
 ```javascript
-var dropdown = require('dropdown');
-var myDropdown = dropdown('a.dropdown-toggle');
+var Dropdown = require('dropdown');
+var mine = new Dropdown(anchor, menu);
+mine.show();
+
+setTimeout(function(){
+  mine.hide();
+}, 5000);
+
+mine.on('hide', function(){
+  console.log('dropdown is hidden!');
+});
 ```
 
-Clicking the link should show the dropdown menu. You can also use a few methods:
+  If you want to turn off the `data-attribute` api, pass in `false` as the third argument to the constructor. Not ideal -- I know -- and I'm gladly open to API suggestions.
 
-```javascript
-myDropdown.show();
-myDropdown.hide();
-myDropdown.toggle(); 
-```
+
 
 ## License
 
