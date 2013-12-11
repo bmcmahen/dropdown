@@ -9,12 +9,25 @@
   }
 
   .dropdown ul {
-    background: #eee;
+    background: red;
+    border-radius: 3px;
   }
 
   *:focus {
     outline: none;
   }
+
+
+
+  #dlabel.showing-dropdown {
+    text-decoration: none;
+    color: #777;
+  }
+
+  .dropdown .arrow {
+    border-bottom-color: red;
+  }
+
   </style>
 </head>
 <body>
@@ -64,7 +77,8 @@
 
 
 <script>
-  var dropdown = require('dropdown');
+  var Dropdown = require('dropdown');
+  Dropdown.listen();
   var testclick = document.getElementById('testclick');
   testclick.onclick = function(e){
     console.log('clicked!');

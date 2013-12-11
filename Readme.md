@@ -15,7 +15,11 @@
 
 ## Use
 	
-  The standard API is similar to Bootstrap and accessed through `data` attributes in your HTML.
+  You can enable the html API, which is similar to Bootstrap and accessed through `data` attributes, by calling `listen`.
+
+```javascript
+require('dropdown').listen();
+```
 
 ```html
 <a id='dlabel' href='#' data-dropdown-id='mydropdown'>User Menu</a>
@@ -28,9 +32,7 @@
 </div>
 ```
 
-```javascript
-require('dropdown');
-```
+
   
   You are encouraged to use `role`, `aria-labelledby` and `aria-hidden` attributes to ensure full accessibility. 
 
@@ -49,10 +51,6 @@ mine.on('hide', function(){
   console.log('dropdown is hidden!');
 });
 ```
-
-  If you want to turn off the `data-attribute` api, pass in `false` as the third argument to the constructor. Not ideal -- I know -- and I'm gladly open to API suggestions.
-
-
 
 ## License
 
