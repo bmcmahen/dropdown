@@ -1016,21 +1016,7 @@ var stop = require('stop');
 
 var currentDropdown;
 
-// auto trigger any elements with [data-dropdown-id].
-var dropdownTrigger = delegate.bind(document, '[data-dropdown-id]', 'click', function(e){
-  prevent(e);
-  var anchor = target(e);
-  if (classes(anchor).has('showing-dropdown')) return;
-  var _id = attr(anchor).get('data-dropdown-id');
-  var menu = document.getElementById(_id);
-  if (menu) {
-    var dd = new DropDown(anchor, menu);
-    dd.show();
-  }
-});
-
-
-module.exports = DropDown;
+exports = module.exports = DropDown;
 
 /**
  * Dropdown Constructor
@@ -1038,12 +1024,9 @@ module.exports = DropDown;
  * @param {Element} el     
  */
 
-function DropDown(anchor, el, stopListening){
+function DropDown(anchor, el){
   if (!(this instanceof DropDown)) return new DropDown(anchor, el);
   if (currentDropdown) currentDropdown.hide();
-  if (stopListening) {
-    delegate.unbind(document, 'click', dropdownTrigger, false);
-  }
   currentDropdown = this;
   this.el = el;
   this.focus = this.el.querySelector('[tabindex = "-1"]');
@@ -1159,6 +1142,29 @@ DropDown.prototype.hide = function(){
   currentDropdown = null;
   return this;
 };
+
+/**
+ * enable the [data-dropdown-id] api
+ * @return {Delegation} 
+ */
+
+exports.listen = function(){
+  return delegate.bind(document, '[data-dropdown-id]', 'click', function(e){
+    prevent(e);
+    var anchor = target(e);
+    if (classes(anchor).has('showing-dropdown')) return;
+    var _id = attr(anchor).get('data-dropdown-id');
+    var menu = document.getElementById(_id);
+    if (menu) {
+      var dd = new DropDown(anchor, menu);
+      dd.show();
+    }
+  });
+};
+
+
+exports.currentDropdown = currentDropdown;
+
 
 });
 
