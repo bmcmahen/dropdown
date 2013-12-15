@@ -57,7 +57,10 @@ DropDown.prototype.bind = function(){
 
 DropDown.prototype.testClose = function(e){
   var t = target(e);
-  if (classes(t).has('showing-dropdown')) stop(e);
+  if (classes(t).has('showing-dropdown')){
+    prevent(e);
+    stop(e);
+  }
   var self = this;
   setTimeout(function(){
     if (self.autohide) self.hide();
