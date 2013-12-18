@@ -10,7 +10,6 @@
     "component/classes": "*",
     "component/events": "*",
     "component/delegate": "*",
-    "bmcmahen/target": "*",
     "yields/prevent": "*",
     "yields/stop": "*"
   },

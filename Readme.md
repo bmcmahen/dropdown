@@ -23,7 +23,7 @@ require('dropdown').listen();
 
 ```html
 <a id='dlabel' href='#' data-dropdown-id='mydropdown'>User Menu</a>
-<div id='mydropdown' role='menu' aria-labelledby='dlabel' aria-hidden='true' class='dropdown'>
+<div id='mydropdown' role='menu' aria-labelledby='dlabel' aria-hidden='true' class='Dropdown'>
   <div class='arrow'></div>
   <ul>
     <li><a role='menuitem' tabindex='-1' href='#'> User Settings... </a></li>

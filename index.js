@@ -3,7 +3,6 @@ var classes = require('classes');
 var events = require('events');
 var delegate = require('delegate');
 var prevent = require('prevent');
-var target = require('target');
 var attr = require('attr');
 var stop = require('stop');
 
@@ -56,7 +55,7 @@ DropDown.prototype.bind = function(){
  */
 
 DropDown.prototype.testClose = function(e){
-  var t = target(e);
+  var t = e.target;
   if (classes(t).has('showing-dropdown')){
     prevent(e);
     stop(e);
@@ -149,7 +148,7 @@ exports.listen = function(){
   isBound = true;
   return delegate.bind(document, '[data-dropdown-id]', 'click', function(e){
     prevent(e);
-    var anchor = target(e);
+    var anchor = e.delegateTarget;
     if (classes(anchor).has('showing-dropdown')) return;
     var _id = attr(anchor).get('data-dropdown-id');
     var menu = document.getElementById(_id);
