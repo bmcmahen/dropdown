@@ -64,9 +64,11 @@ DropDown.prototype.bind = function(){
 
 DropDown.prototype.testClose = function(e){
   var t = e.target;
-  if (classes(t).has('showing-dropdown')){
+  var sourceBtn = classes(t).has('showing-dropdown');
+  if (sourceBtn){
     prevent(e);
     stop(e);
+    if (t.tagName == 'INPUT') return;
   }
   var self = this;
   setTimeout(function(){
