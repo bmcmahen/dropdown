@@ -83,7 +83,7 @@ DropDown.prototype.testClose = function(e){
 DropDown.prototype.unbind = function(){
   this.windowEvents.unbind();
   this.docEvents.unbind();
-  this.bodyEvents.unbind();
+  if (this.bodyEvents) this.bodyEvents.unbind();
   return this;
 }
 
