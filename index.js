@@ -26,8 +26,6 @@ exports = module.exports = DropDown;
 
 function DropDown(anchor, el){
   if (!(this instanceof DropDown)) return new DropDown(anchor, el);
-  if (currentDropdown) currentDropdown.hide();
-  currentDropdown = this;
   this.el = el;
   this.focus = this.el.querySelector('[tabindex = "-1"]');
   this.anchor = anchor;
@@ -119,6 +117,10 @@ DropDown.prototype.setPosition = function(){
 
 DropDown.prototype.show = function(){
   if (this.isShown) return;
+  if (currentDropdown && currentDropdown != this) {
+    currentDropdown.hide();
+  }
+  currentDropdown = this;
   this.setPosition();
   attr(this.el).set('aria-hidden', false);
   classes(this.anchor).add('showing-dropdown');
