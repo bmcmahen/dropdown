@@ -1,3 +1,7 @@
+/**
+ * Module dependencies
+ */
+
 var Emitter = require('emitter');
 var classes = require('classes');
 var events = require('events');
@@ -7,6 +11,10 @@ var attr = require('attr');
 var stop = require('stop');
 
 var currentDropdown, isBound;
+
+/**
+ * Expose
+ */
 
 exports = module.exports = DropDown;
 
@@ -133,7 +141,7 @@ DropDown.prototype.hide = function(){
   classes(this.el).remove('in');
   this.isShown = false;
   this.emit('hide');
-  this.anchor.focus();
+  if (this.focus) this.anchor.focus();
   currentDropdown = null;
   return this;
 };
